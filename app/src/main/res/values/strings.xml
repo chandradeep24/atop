@@ -7,4 +7,7 @@
     <string name="fps">FPS:</string>
     <string name="fps_1_low">Low 1%:</string>
     <string name="fps_0_1_low">Low 0.1%:</string>
+    <string name="launch_overlay">Launch Overlay</string>
+    <string name="stop_overlay">Stop Overlay</string>
+    <string name="atop">atop</string>
 </resources>

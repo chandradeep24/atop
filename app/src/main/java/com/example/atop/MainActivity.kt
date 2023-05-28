@@ -12,24 +12,29 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.widget.Button
 import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var dialog: AlertDialog
-    private val overlayRequestCode = 1001
-    private val overlayPermissionCode = 2001
+
+    private lateinit var  launchButton: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        launchButton = findViewById(R.id.launchButton)
+
 
         if (!checkOverlayPermissions()) {
             requestOverlayPermission()
         }
-        else {
-            startOverlayService()
+
+        launchButton.setOnClickListener {
+            toggleOverlayService()
         }
 
 
@@ -73,24 +78,29 @@ class MainActivity : AppCompatActivity() {
         return Settings.canDrawOverlays(this)
     }
 
-    private fun startOverlayService() {
+    private fun toggleOverlayService() {
         if (!isServiceRunning()) {
             startService(Intent(this, Overlay::class.java))
+            launchButton.text = getString(R.string.stop_overlay)
+        } else {
+            stopService(Intent(this, Overlay::class.java))
+            launchButton.text = getString(R.string.launch_overlay)
         }
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == overlayRequestCode) {
-            if (checkOverlayPermissions()) {
-                startOverlayService()
-            }
-            else {
-                requestOverlayPermission()
-            }
-        }
-    }
+//
+//    @Deprecated("Deprecated in Java")
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (requestCode == overlayRequestCode) {
+//            if (checkOverlayPermissions()) {
+//                startOverlayService()
+//            }
+//            else {
+//                requestOverlayPermission()
+//            }
+//        }
+//    }
 
 
 
