@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.IBinder
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -22,29 +23,24 @@ class Overlay: Service() {
     override fun onCreate() {
         super.onCreate()
 
-        val metrics = applicationContext.resources.displayMetrics
-        val width = metrics.widthPixels
-        val height = metrics.heightPixels
-
-
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
         val inflater = baseContext.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         overlayView = inflater.inflate(R.layout.overlay,null) as ViewGroup
 
 
         layoutType = if (Build.VERSION.SDK_INT >=  Build.VERSION_CODES.O) {
-            WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
+            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         } else WindowManager.LayoutParams.TYPE_TOAST
 
-        overlayLayoutParams = WindowManager.LayoutParams (
-            width,
-            height,
+        overlayLayoutParams = WindowManager.LayoutParams(
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT,
             layoutType!!,
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
             PixelFormat.TRANSLUCENT
         )
 
-        overlayLayoutParams.gravity = 0
+        overlayLayoutParams.gravity = Gravity.TOP or Gravity.START
         overlayLayoutParams.x = 0
         overlayLayoutParams.y = 0
 

@@ -18,7 +18,6 @@ import android.widget.TextView
 class MainActivity : AppCompatActivity() {
 
     private lateinit var dialog: AlertDialog
-
     private lateinit var  launchButton: Button
 
 
@@ -27,7 +26,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         launchButton = findViewById(R.id.launchButton)
-
 
         if (!checkOverlayPermissions()) {
             requestOverlayPermission()
