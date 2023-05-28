@@ -80,10 +80,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun toggleOverlayService() {
         if (!isServiceRunning()) {
-            startService(Intent(this, Overlay::class.java))
-            launchButton.text = getString(R.string.stop_overlay)
+            //Check again if it permissions were given
+            if (!checkOverlayPermissions()) {
+                requestOverlayPermission()
+            } else {
+                startService(Intent(this@MainActivity, Overlay::class.java))
+                launchButton.text = getString(R.string.stop_overlay)
+            }
         } else {
-            stopService(Intent(this, Overlay::class.java))
+            stopService(Intent(this@MainActivity, Overlay::class.java))
             launchButton.text = getString(R.string.launch_overlay)
         }
     }
