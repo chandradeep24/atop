@@ -17,12 +17,20 @@ import android.widget.TextView
 class MainActivity : AppCompatActivity() {
 
     private lateinit var dialog: AlertDialog
-    private lateinit var  cpuUtilization: TextView
+    private val overlayRequestCode = 1001
+    private val overlayPermissionCode = 2001
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+        if (!checkOverlayPermissions()) {
+            requestOverlayPermission()
+        }
+        else {
+            startOverlayService()
+        }
 
 
     }
@@ -63,6 +71,25 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkOverlayPermissions(): Boolean {
         return Settings.canDrawOverlays(this)
+    }
+
+    private fun startOverlayService() {
+        if (!isServiceRunning()) {
+            startService(Intent(this, Overlay::class.java))
+        }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == overlayRequestCode) {
+            if (checkOverlayPermissions()) {
+                startOverlayService()
+            }
+            else {
+                requestOverlayPermission()
+            }
+        }
     }
 
 
