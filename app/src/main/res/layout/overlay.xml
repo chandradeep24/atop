@@ -1,63 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent_black"
+    android:padding="16dp"
     android:orientation="vertical">
 
-    <!-- GPU Utilization -->
-    <TextView
-        android:id="@+id/gpuUtilization"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/gpu_utilization"/>
+    <!-- Define the background color -->
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@color/transparent_black"-->
+<!--        android:padding="16dp"-->
+<!--        android:orientation="vertical">-->
 
-    <!-- CPU Utilization -->
-    <TextView
-        android:id="@+id/cpuUtilization"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cpu_utilization"
-        />
+        <!-- First Line -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <!-- Memory Utilization -->
-    <TextView
-        android:id="@+id/memoryUtilization"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/memory_utilization"
-    />
+            <!-- GPU Utilization -->
+            <TextView
+                android:id="@+id/gpuUtilization"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gpu_utilization"
+                android:textSize="20sp"
+                android:fontFamily="@font/JetBrainsMonoExtraBold"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_green_dark" />
 
-    <!-- Power Consumption -->
-    <TextView
-        android:id="@+id/powerConsumption"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/power_consumption"
-       />
+            <TextView
+                android:id="@+id/gpuNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:fontFamily="@font/JetBrainsMonoExtraBold"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_green_light" />
 
-    <!-- FPS -->
-    <TextView
-        android:id="@+id/fps"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/fps"
-        />
+            <Space
+                android:layout_width="24dp"
+                android:layout_height="wrap_content" />
+            <!-- Power Consumption -->
+            <TextView
+                android:id="@+id/powerConsumption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/power_consumption"
+                android:textSize="20sp"
+                android:fontFamily="@font/JetBrainsMonoExtraBold"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_green_dark" />
 
-    <!-- FPS 1% Low -->
-    <TextView
-        android:id="@+id/fps1Low"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/fps_1_low"
-   />
+            <TextView
+                android:id="@+id/powerNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:fontFamily="@font/JetBrainsMonoExtraBold"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_green_light" />
 
-    <!-- FPS 0.1% Low -->
-    <TextView
-        android:id="@+id/fps01Low"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/fps_0_1_low"
- />
+        </LinearLayout>
 
-</LinearLayout>
+        <!-- Second Line -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- CPU Utilization -->
+            <TextView
+                android:id="@+id/cpuUtilization"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cpu_utilization"
+                android:textSize="20sp"
+                android:fontFamily="@font/JetBrainsMonoExtraBold"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_orange_dark" />
+
+            <TextView
+                android:id="@+id/cpuNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:fontFamily="@font/JetBrainsMonoExtraBold"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_orange_light" />
+
+            <Space
+                android:layout_width="24dp"
+                android:layout_height="wrap_content" />
+            <!-- Memory Utilization -->
+            <TextView
+                android:id="@+id/memoryUtilization"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/memory_utilization"
+                android:textSize="20sp"
+                android:fontFamily="@font/JetBrainsMonoExtraBold"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_orange_dark" />
+
+            <TextView
+                android:id="@+id/memoryNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:fontFamily="@font/JetBrainsMonoExtraBold"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_orange_light" />
+
+        </LinearLayout>
+
+        <!-- Third Line -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- FPS -->
+            <TextView
+                android:id="@+id/fps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fps"
+                android:textSize="20sp"
+                android:fontFamily="@font/JetBrainsMonoExtraBold"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_red_dark" />
+
+            <TextView
+                android:id="@+id/fpsNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:fontFamily="@font/JetBrainsMonoExtraBold"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_red_light" />
+
+            <Space
+                android:layout_width="24dp"
+                android:layout_height="wrap_content" />
+
+            <!-- FPS 1% Low -->
+            <TextView
+                android:id="@+id/fps1Low"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fps_1_low"
+                android:textSize="20sp"
+                android:fontFamily="@font/JetBrainsMonoExtraBold"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_red_dark" />
+
+            <TextView
+                android:id="@+id/fps1LowNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:fontFamily="@font/JetBrainsMonoExtraBold"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_red_light" />
+
+            <Space
+                android:layout_width="24dp"
+                android:layout_height="wrap_content" />
+
+            <!-- FPS 0.1% Low -->
+            <TextView
+                android:id="@+id/fps01Low"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fps_0_1_low"
+                android:textSize="20sp"
+                android:fontFamily="@font/JetBrainsMonoExtraBold"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_red_dark" />
+
+            <TextView
+                android:id="@+id/fps01LowNumber"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:fontFamily="@font/JetBrainsMonoExtraBold"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_red_light" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+<!--</LinearLayout>-->
+
+

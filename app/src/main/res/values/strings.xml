@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">atop</string>
-    <string name="gpu_utilization">GPU Utilization:</string>
-    <string name="cpu_utilization">CPU Utilization:</string>
-    <string name="memory_utilization">Memory Utilization:</string>
-    <string name="power_consumption">Power Consumption:</string>
+    <string name="gpu_utilization">GPU:</string>
+    <string name="cpu_utilization">CPU:</string>
+    <string name="memory_utilization">MEM:</string>
+    <string name="power_consumption">PWR:</string>
     <string name="fps">FPS:</string>
-    <string name="fps_1_low">FPS 1% Low:</string>
-    <string name="fps_0_1_low">FPS 0.1% Low:</string>
+    <string name="fps_1_low">Low 1%:</string>
+    <string name="fps_0_1_low">Low 0.1%:</string>
 </resources>
