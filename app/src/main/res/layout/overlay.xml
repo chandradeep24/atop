@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- GPU Utilization -->
+    <TextView
+        android:id="@+id/gpuUtilization"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/gpu_utilization"/>
+
+    <!-- CPU Utilization -->
+    <TextView
+        android:id="@+id/cpuUtilization"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cpu_utilization"
+        />
+
+    <!-- Memory Utilization -->
+    <TextView
+        android:id="@+id/memoryUtilization"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/memory_utilization"
+    />
+
+    <!-- Power Consumption -->
+    <TextView
+        android:id="@+id/powerConsumption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/power_consumption"
+       />
+
+    <!-- FPS -->
+    <TextView
+        android:id="@+id/fps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fps"
+        />
+
+    <!-- FPS 1% Low -->
+    <TextView
+        android:id="@+id/fps1Low"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fps_1_low"
+   />
+
+    <!-- FPS 0.1% Low -->
+    <TextView
+        android:id="@+id/fps01Low"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fps_0_1_low"
+ />
+
+</LinearLayout>
