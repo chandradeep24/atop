@@ -127,8 +127,9 @@
 
             <TextView
                 android:id="@+id/fpsNumber"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:textSize="20sp"
                 android:fontFamily="@font/jetbrains_mono"
                 android:textColor="@android:color/holo_red_light" />
@@ -149,8 +150,9 @@
 
             <TextView
                 android:id="@+id/fps1LowNumber"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:textSize="20sp"
                 android:fontFamily="@font/jetbrains_mono"
                 android:textColor="@android:color/holo_red_light" />
@@ -173,6 +175,7 @@
                 android:id="@+id/fps01LowNumber"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:textSize="20sp"
                 android:fontFamily="@font/jetbrains_mono"
                 android:textColor="@android:color/holo_red_light" />
