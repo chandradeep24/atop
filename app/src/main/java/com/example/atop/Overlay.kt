@@ -1,9 +1,13 @@
 package com.example.atop
 
+import android.app.ActivityManager
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
+import android.os.BatteryManager
 import android.os.Build
+import android.os.Debug
 import android.os.IBinder
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -13,7 +17,10 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
 import android.os.Process
+import android.view.Choreographer
 import android.widget.TextView
+import java.text.DecimalFormat
+
 
 class Overlay: Service() {
 
@@ -36,11 +43,16 @@ class Overlay: Service() {
     private lateinit var fps1LowNumberTextView: TextView
     private lateinit var fps01LowNumberTextView: TextView
 
+    private val decimalFormat = DecimalFormat("0.0")
+    private val integerFormat = DecimalFormat("0")
+
     override fun onBind(p0: Intent?): IBinder? {
         return null
     }
     override fun onCreate() {
         super.onCreate()
+
+
 
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
         val inflater = baseContext.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -80,39 +92,111 @@ class Overlay: Service() {
 
         monitoringHandler.post(monitoringRunnable)
 
+        //FPS calculation
+        Choreographer.getInstance().postFrameCallback(choreographerCallback)
+
         windowManager.addView(overlayView,overlayLayoutParams)
     }
 
     private fun monitorPerformance() {
-        //Logic to calculate metrics
+        //Helper logic
+        //Power
+        val batteryManager = getSystemService(Context.BATTERY_SERVICE) as BatteryManager
+        val powerConsumption = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW) / 1000000.0
+
+        //CPU
+        val cpuUtilization = CpuInfo.getCpuUsageFromFreq()
+
+        //MEM
+        val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val memoryInfo = ActivityManager.MemoryInfo()
+        activityManager.getMemoryInfo(memoryInfo)
+        val totalMemory = memoryInfo.totalMem
+        val availableMemory = memoryInfo.availMem
+        val usedMemory = totalMemory - availableMemory
+        val memoryUtilization = usedMemory / (1024*1024)
+
+
+        //GPU
         val gpuUtilization =  0
-        val powerConsumption = 0
-        val cpuUtilization = 0
-        val memoryUtilization = 0
-        val currentFps = 0
-        val fps1Low = 0
-        val fps01Low = 0
+
+
+        //FPS
+//        val currentFps = 0
+//        val fps1Low = 0
+//        val fps01Low = 0
 
         //Update TextViews
         mainHandler.post {
-            gpuNumberTextView.text = gpuUtilization.toString()
-            powerNumberTextView.text = powerConsumption.toString()
-            cpuNumberTextView.text = cpuUtilization.toString()
-            memoryNumberTextView.text = memoryUtilization.toString()
-            fpsNumberTextView.text = currentFps.toString()
-            fps1LowNumberTextView.text = fps1Low.toString()
-            fps01LowNumberTextView.text = fps01Low.toString()
+            val gpuText = getString(R.string.gpu_utilization, decimalFormat.format(gpuUtilization))
+            gpuNumberTextView.text = gpuText
+
+            val powerText = getString(R.string.power_consumption, decimalFormat.format(powerConsumption))
+            powerNumberTextView.text = powerText
+
+            val cpuText = getString(R.string.cpu_utilization, decimalFormat.format(cpuUtilization))
+            cpuNumberTextView.text = cpuText
+
+            val memoryText = getString(R.string.memory_utilization, integerFormat.format(memoryUtilization))
+            memoryNumberTextView.text = memoryText
+
+//            fpsNumberTextView.text = currentFps.toString()
+//            fps1LowNumberTextView.text = fps1Low.toString()
+//            fps01LowNumberTextView.text = fps01Low.toString()
         }
 
         //Update Interval: 1s
         monitoringHandler.postDelayed(monitoringRunnable, 1000)
     }
 
+    private val choreographerCallback = object : Choreographer.FrameCallback {
+        private var lastFrameTimeNanos: Long = 0
+        private var frameCount = 0
+        private var fps1LowCount : Long = 0
+        private var fps01LowCount : Long = 0
+        private val fpsHistory: MutableList<Long> = mutableListOf()
+
+        override fun doFrame(frameTimeNanos: Long) {
+            if (lastFrameTimeNanos != 0L) {
+                val frameTimeDiff = frameTimeNanos - lastFrameTimeNanos
+                val frameRate = (1_000_000_000L / frameTimeDiff)
+
+                fpsHistory.add(frameRate)
+
+                fps1LowCount = calculatePercentileFps(fpsHistory, 1.0)
+                fps01LowCount = calculatePercentileFps(fpsHistory, 0.1)
+
+                // Update FPS and 1% Low, 0.1% Low TextViews
+                mainHandler.post {
+                    fpsNumberTextView.text = frameRate.toString()
+                    fps1LowNumberTextView.text = fps1LowCount.toString()
+                    fps01LowNumberTextView.text = fps01LowCount.toString()
+                }
+            }
+
+            frameCount++
+            lastFrameTimeNanos = frameTimeNanos
+
+            Choreographer.getInstance().postFrameCallback(this)
+        }
+
+        private fun calculatePercentileFps(fpsHistory: List<Long>, percentile: Double): Long {
+            val sortedFps = fpsHistory.sorted()
+            val index = (percentile / 100.0 * sortedFps.size).toInt()
+            return sortedFps[index]
+        }
+    }
+
+
+
+
+
     override fun onDestroy() {
         super.onDestroy()
         windowManager.removeView(overlayView)
 
         //Quit the thread
+        Choreographer.getInstance().removeFrameCallback(choreographerCallback)
         monitoringHandler.removeCallbacks(monitoringRunnable)
         monitoringHandlerThread.quitSafely()
     }
