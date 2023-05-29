@@ -2,5 +2,7 @@
 
 [![Scc Count Badge](https://sloc.xyz/github/theNullCrown/atop/?category=code)](https://github.com/theNullCrown/atop/)
 
-Performance monitoring overlay for android
+Performance monitoring overlay for android. 
+
+CPU utilization is calculated by adapting https://github.com/souch/AndroidCPU to Kotlin. 
 
