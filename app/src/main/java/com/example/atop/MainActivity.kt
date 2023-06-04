@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var dialog: AlertDialog
     private lateinit var  launchButton: Button
+    private var isServiceRunning = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,41 +77,37 @@ class MainActivity : AppCompatActivity() {
         return Settings.canDrawOverlays(this)
     }
 
-    private fun toggleOverlayService() {
-        if (!isServiceRunning()) {
-            //Check again if it permissions were given
-            if (!checkOverlayPermissions()) {
-                requestOverlayPermission()
-            } else {
-                startService(Intent(this@MainActivity, Overlay::class.java))
-                launchButton.text = getString(R.string.stop_overlay)
-            }
+    override fun onResume() {
+        super.onResume()
+        // Check if the service is running when the app resumes
+        isServiceRunning = isServiceRunning()
+        updateLaunchButtonText()
+    }
+
+    private fun updateLaunchButtonText() {
+        if (isServiceRunning()) {
+            launchButton.text = getString(R.string.stop_overlay)
         } else {
-            stopService(Intent(this@MainActivity, Overlay::class.java))
             launchButton.text = getString(R.string.launch_overlay)
         }
     }
 
-//
-//    @Deprecated("Deprecated in Java")
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == overlayRequestCode) {
-//            if (checkOverlayPermissions()) {
-//                startOverlayService()
-//            }
-//            else {
-//                requestOverlayPermission()
-//            }
-//        }
-//    }
-
-
-
-
-
-
-
+    private fun toggleOverlayService() {
+        if (!isServiceRunning) {
+            // Check again if permissions were given
+            if (!checkOverlayPermissions()) {
+                requestOverlayPermission()
+            } else {
+                startService(Intent(this@MainActivity, Overlay::class.java))
+                isServiceRunning = true
+                updateLaunchButtonText()
+            }
+        } else {
+            stopService(Intent(this@MainActivity, Overlay::class.java))
+            isServiceRunning = false
+            updateLaunchButtonText()
+        }
+    }
 
 
 }

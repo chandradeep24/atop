@@ -7,7 +7,6 @@ import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.BatteryManager
 import android.os.Build
-import android.os.Debug
 import android.os.IBinder
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -16,10 +15,13 @@ import android.view.WindowManager
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
+import android.os.PowerManager
 import android.os.Process
+import android.os.SystemClock
 import android.view.Choreographer
 import android.widget.TextView
 import java.text.DecimalFormat
+import kotlin.math.abs
 
 
 class Overlay: Service() {
@@ -43,7 +45,10 @@ class Overlay: Service() {
     private lateinit var fps1LowNumberTextView: TextView
     private lateinit var fps01LowNumberTextView: TextView
 
-    private val decimalFormat = DecimalFormat("0.0")
+    private var previousEnergy: Long = 0
+    private var previousTime: Long = 0
+
+    private val decimalFormat = DecimalFormat("0.00")
     private val integerFormat = DecimalFormat("0")
 
     override fun onBind(p0: Intent?): IBinder? {
@@ -102,7 +107,12 @@ class Overlay: Service() {
         //Helper logic
         //Power
         val batteryManager = getSystemService(Context.BATTERY_SERVICE) as BatteryManager
-        val powerConsumption = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW) / 1000000.0
+        val batteryPercentage = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+        val minVoltage = 3.2
+        val maxVoltage = 4.2
+        val voltage = minVoltage + (maxVoltage - minVoltage) * (batteryPercentage / 100.0)
+        val current = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW) / 1000000.0
+        val energy = abs(current * voltage)
 
         //CPU
         val cpuUtilization = CpuInfo.getCpuUsageFromFreq()
@@ -131,7 +141,7 @@ class Overlay: Service() {
             val gpuText = getString(R.string.gpu_utilization, decimalFormat.format(gpuUtilization))
             gpuNumberTextView.text = gpuText
 
-            val powerText = getString(R.string.power_consumption, decimalFormat.format(powerConsumption))
+            val powerText = getString(R.string.power_consumption, decimalFormat.format(energy))
             powerNumberTextView.text = powerText
 
             val cpuText = getString(R.string.cpu_utilization, decimalFormat.format(cpuUtilization))
@@ -146,7 +156,7 @@ class Overlay: Service() {
         }
 
         //Update Interval: 1s
-        monitoringHandler.postDelayed(monitoringRunnable, 1000)
+        monitoringHandler.postDelayed(monitoringRunnable, 2000)
     }
 
     private val choreographerCallback = object : Choreographer.FrameCallback {
