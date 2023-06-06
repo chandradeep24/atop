@@ -1,29 +1,22 @@
 package com.example.atop
 
-import android.os.Build
 import java.io.File
 import java.io.FileFilter
 import java.io.RandomAccessFile
-import java.util.ArrayList
 import java.util.regex.Pattern
 
 object CpuInfo {
-    /*
-     * return current cpu usage (0 to 100) guessed from core frequencies
-     */
+    // return current cpu usage (0 to 100) guessed from core frequencies
     fun getCpuUsageFromFreq(): Int {
         return getCpuUsage(getCoresUsageGuessFromFreq())
     }
 
-    /*
-     * @return total cpu usage (from 0 to 100) since last call of getCpuUsage or getCoresUsage
-     *         first call always returns 0 as previous value is not known
-     * ! deprecated since oreo !
-     */
 
-    /* @return total cpu usage (from 0 to 100) from cores usage array
-     * @param coresUsage must come from getCoresUsageXX().
-     */
+//      @return total cpu usage (from 0 to 100) since last call of getCpuUsage or getCoresUsage
+//             first call always returns 0 as previous value is not known
+
+
+
     private fun getCpuUsage(coresUsage: IntArray): Int {
         // compute total cpu usage from each core as the total cpu usage given by /proc/stat seems
         // not considering offline cores: i.e. 2 cores, 1 is offline, total cpu usage given by /proc/stat
@@ -38,18 +31,17 @@ object CpuInfo {
         return cpuUsage / (coresUsage.size - 1)
     }
 
-    /*
-     * guess core usage using core frequency (e.g. all core at min freq => 0% usage;
-     *   all core at max freq => 100%)
-     *
-     * This function is compatible with android oreo and later but is less precise than
-     *   getCoresUsageDeprecated.
-     * This function returns the current cpu usage (not the average usage since last call).
-     *
-     * @return array of cores usage
-     *   array size = nbcore +1 as the first element is for global cpu usage
-     *   array element: 0 => cpu at 0% ; 100 => cpu at 100%
-     */
+
+//     guess core usage using core frequency (e.g. all core at min freq => 0% usage;
+//        all core at max freq => 100%)
+//
+//      This function is compatible with android oreo and later but is less precise
+//      This function returns the current cpu usage (not the average usage since last call).
+//
+//      @return array of cores usage
+//        array size = nbcore +1 as the first element is for global cpu usage
+//        array element: 0 => cpu at 0% ; 100 => cpu at 100%
+
     @Synchronized
     fun getCoresUsageGuessFromFreq(): IntArray {
         initCoresFreq()
@@ -87,7 +79,6 @@ object CpuInfo {
         return readIntegerFile("/sys/devices/system/cpu/cpu$coreIndex/cpufreq/cpuinfo_max_freq")
     }
 
-    // return 0 if any pb occurs
     private fun readIntegerFile(path: String): Int {
         var ret = 0
         try {
@@ -105,11 +96,10 @@ object CpuInfo {
     }
 
     // from https://stackoverflow.com/questions/7962155/how-can-you-detect-a-dual-core-cpu-on-an-android-device-from-code
-    /**
-     * Gets the number of cores available in this device, across all processors.
-     * Requires: Ability to peruse the filesystem at "/sys/devices/system/cpu"
-     * @return The number of cores, or 1 if failed to get result
-     */
+//     Gets the number of cores available in this device, across all processors.
+//     Requires: Ability to peruse the filesystem at "/sys/devices/system/cpu"
+//     @return The number of cores, or 1 if failed to get result
+
     private fun getNbCores(): Int {
         //Private Class to display only CPU devices in the directory listing
         class CpuFilter : FileFilter {
