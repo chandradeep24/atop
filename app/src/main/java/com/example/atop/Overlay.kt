@@ -35,7 +35,7 @@ class Overlay: Service() {
     private lateinit var monitoringRunnable: Runnable
     private val mainHandler = Handler(Looper.getMainLooper())
 
-    private lateinit var gpuNumberTextView: TextView
+//    private lateinit var gpuNumberTextView: TextView
     private lateinit var powerNumberTextView: TextView
     private lateinit var cpuNumberTextView: TextView
     private lateinit var memoryNumberTextView: TextView
@@ -85,7 +85,7 @@ class Overlay: Service() {
         monitoringRunnable = Runnable { monitorPerformance() }
 
         //TextView init
-        gpuNumberTextView = overlayView.findViewById(R.id.gpuNumber)
+//        gpuNumberTextView = overlayView.findViewById(R.id.gpuNumber)
         powerNumberTextView = overlayView.findViewById(R.id.powerNumber)
         cpuNumberTextView = overlayView.findViewById(R.id.cpuNumber)
         memoryNumberTextView = overlayView.findViewById(R.id.memoryNumber)
@@ -126,7 +126,7 @@ class Overlay: Service() {
 
 
         //GPU
-        val gpuUtilization =  0
+//        val gpuUtilization =  0
 
 
         //FPS
@@ -136,8 +136,8 @@ class Overlay: Service() {
 
         //Update TextViews
         mainHandler.post {
-            val gpuText = getString(R.string.gpu_utilization, decimalFormat.format(gpuUtilization))
-            gpuNumberTextView.text = gpuText
+//            val gpuText = getString(R.string.gpu_utilization, decimalFormat.format(gpuUtilization))
+//            gpuNumberTextView.text = gpuText
 
             val powerText = getString(R.string.power_consumption, decimalFormat.format(energy))
             powerNumberTextView.text = powerText
