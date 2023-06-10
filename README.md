@@ -22,7 +22,7 @@ Performance monitoring overlay for android.
 ## Planned features:
 
 * Customization options for the overlay including theme, color, transparency, size and position on screen.
-* Downloadable APK and Play Store options
+* Play Store release
 
 ### On GPU utilization
 
