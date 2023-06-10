@@ -16,8 +16,8 @@ Performance monitoring overlay for android.
 * Minimal permissions: only overlay drawing permission is required. No root access is necessary.
 * No persistence: no data is stored as disk read and write is expensive and will skew the metrics. Use external tools for recording the data. 
 
-<img src = "portrait.png" alt = "por" width = "400">
-<img src = "landscape.png" alt = "lan" height = "400">
+<img src = "portrait.png" alt = "por" width = "200">
+<img src = "landscape.png" alt = "lan" height = "200">
 
 ## Planned features:
 
